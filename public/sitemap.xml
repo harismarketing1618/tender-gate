@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Home / Main Procurement Portal -->
+  <url>
+    <loc>https://tender-gate.vercel.app/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Live Pakistan Tenders Directory -->
+  <url>
+    <loc>https://tender-gate.vercel.app/?view=tenders</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 8 Autonomous AI Crawlers Hub -->
+  <url>
+    <loc>https://tender-gate.vercel.app/?view=agents</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Pakistan Construction Market Analytics & Material Indices -->
+  <url>
+    <loc>https://tender-gate.vercel.app/?view=analytics</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- PEC Contractor Eligibility & PPRA Bidding Guide -->
+  <url>
+    <loc>https://tender-gate.vercel.app/?view=how-it-works</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- About Tender Gate & Contractor FAQ -->
+  <url>
+    <loc>https://tender-gate.vercel.app/?view=about</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

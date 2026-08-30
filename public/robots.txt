@@ -1,0 +1,11 @@
+﻿# TENDER GATE Robots.txt
+# https://tender-gate.vercel.app
+
+User-agent: *
+Allow: /
+
+# Disallow internal assets or private routes if any
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://tender-gate.vercel.app/sitemap.xml
