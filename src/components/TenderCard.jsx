@@ -19,7 +19,7 @@ import {
   Eye 
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
-import { downloadTenderDossier } from '../services/tenderDownloader';
+import { downloadTenderPDF, downloadTenderDossier } from '../services/tenderDownloader';
 
 export default function TenderCard({
   tender,
@@ -159,17 +159,18 @@ export default function TenderCard({
       {/* Footer Actions */}
       <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          {/* Download Tender Notice Button */}
+          {/* Download Tender Notice PDF Button */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               soundFX.playSuccess();
-              downloadTenderDossier(tender);
+              downloadTenderPDF(tender);
             }}
-            title="Download Official Tender Notice & Dossier (.txt)"
-            className="p-2.5 rounded-xl bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 border border-[#e6dacb] transition cursor-pointer"
+            title="Download Official Tender Notice (PDF)"
+            className="p-2.5 rounded-xl bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-[#e6dacb] transition cursor-pointer flex items-center gap-1"
           >
-            <Download className="w-4 h-4 text-blue-600" />
+            <Download className="w-4 h-4 text-rose-600" />
+            <span className="text-[10px] font-black text-rose-700">PDF</span>
           </button>
 
           {/* Official Website Link Button */}

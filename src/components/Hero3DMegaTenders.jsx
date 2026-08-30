@@ -22,7 +22,7 @@ import {
   Globe
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
-import { downloadTenderDossier } from '../services/tenderDownloader';
+import { downloadTenderPDF, downloadTenderDossier } from '../services/tenderDownloader';
 
 export default function Hero3DMegaTenders({ 
   tenders = [], 
@@ -272,16 +272,17 @@ export default function Hero3DMegaTenders({
                 <ExternalLink className="w-3 h-3" />
               </a>
 
-              {/* Direct Download Dossier */}
+              {/* Direct Download PDF */}
               <button
                 onClick={() => {
                   soundFX.playSuccess();
-                  downloadTenderDossier(currentTender);
+                  downloadTenderPDF(currentTender);
                 }}
-                title="Download Tender Notice Dossier (.txt)"
-                className="p-2.5 rounded-xl bg-white hover:bg-[#fbf0f2] text-[#780016] border border-[#ecd5d9] transition cursor-pointer"
+                title="Download Official Tender Notice (PDF Document)"
+                className="px-3 py-2.5 rounded-xl bg-white hover:bg-rose-50 text-rose-700 font-bold border border-rose-200 text-xs transition cursor-pointer flex items-center gap-1 shadow-2xs"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 text-rose-600" />
+                <span>PDF</span>
               </button>
 
               <button

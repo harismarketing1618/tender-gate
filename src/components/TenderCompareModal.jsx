@@ -15,7 +15,7 @@ import {
   Globe
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
-import { downloadTenderDossier } from '../services/tenderDownloader';
+import { downloadTenderPDF, downloadTenderDossier } from '../services/tenderDownloader';
 
 export default function TenderCompareModal({
   isOpen,
@@ -170,12 +170,13 @@ export default function TenderCompareModal({
                     <button
                       onClick={() => {
                         soundFX.playSuccess();
-                        downloadTenderDossier(tender);
+                        downloadTenderPDF(tender);
                       }}
-                      title="Download Tender Notice Dossier (.txt)"
-                      className="p-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-[#e6dacb] transition cursor-pointer"
+                      title="Download Official Tender Notice (PDF)"
+                      className="px-2 py-2 rounded-xl bg-white hover:bg-rose-50 text-rose-700 border border-[#e6dacb] transition cursor-pointer flex items-center gap-1"
                     >
-                      <Download className="w-3.5 h-3.5" />
+                      <Download className="w-3.5 h-3.5 text-rose-600" />
+                      <span className="text-[10px] font-black">PDF</span>
                     </button>
                   </div>
 

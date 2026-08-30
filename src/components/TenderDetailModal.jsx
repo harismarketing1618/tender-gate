@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { PEC_SPECIALIZATION_CODES } from '../data/pakistanMeta';
 import { soundFX } from '../services/soundFx';
-import { downloadTenderDossier, downloadTenderBOQ } from '../services/tenderDownloader';
+import { downloadTenderPDF, downloadTenderDossier, downloadTenderBOQ } from '../services/tenderDownloader';
 
 export default function TenderDetailModal({
   tender,
@@ -94,17 +94,17 @@ export default function TenderDetailModal({
               <ExternalLink className="w-3 h-3" />
             </a>
 
-            {/* Quick Download Button */}
+            {/* Quick Download PDF Button */}
             <button
               onClick={() => {
                 soundFX.playSuccess();
-                downloadTenderDossier(tender);
+                downloadTenderPDF(tender);
               }}
-              title="Download Full Tender Specification Dossier (.txt)"
-              className="px-3 py-1.5 rounded-xl bg-[#f5efe6] hover:bg-[#ede3d5] text-[#7a5632] font-bold border border-[#e2d5c3] text-xs flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
+              title="Download Official Tender Notice (PDF)"
+              className="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 text-xs flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 text-[#8a6742]" />
-              <span className="hidden sm:inline">Download Notice</span>
+              <Download className="w-3.5 h-3.5 text-rose-600" />
+              <span>Download PDF</span>
             </button>
 
             <button
@@ -242,12 +242,12 @@ export default function TenderDetailModal({
                   <button
                     onClick={() => {
                       soundFX.playSuccess();
-                      downloadTenderDossier(tender);
+                      downloadTenderPDF(tender);
                     }}
-                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black transition flex items-center gap-2 shadow-md cursor-pointer"
                   >
-                    <Download className="w-3.5 h-3.5 text-blue-300" />
-                    <span>Download Tender Dossier (.txt)</span>
+                    <Download className="w-4 h-4 text-white" />
+                    <span>Download Official Notice (PDF)</span>
                   </button>
 
                   <button
@@ -258,7 +258,18 @@ export default function TenderDetailModal({
                     className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
                   >
                     <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-300" />
-                    <span>Download BOQ Specs (.csv)</span>
+                    <span>Download BOQ (.csv)</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      soundFX.playSuccess();
+                      downloadTenderDossier(tender);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5 text-blue-300" />
+                    <span>Dossier (.txt)</span>
                   </button>
                 </div>
               </div>
@@ -367,12 +378,12 @@ export default function TenderDetailModal({
                   <button
                     onClick={() => {
                       soundFX.playSuccess();
-                      downloadTenderDossier(tender);
+                      downloadTenderPDF(tender);
                     }}
-                    className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold flex items-center gap-1.5 hover:bg-slate-800 transition cursor-pointer"
+                    className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold flex items-center gap-1.5 transition cursor-pointer shadow-xs"
                   >
                     <Download className="w-3.5 h-3.5" />
-                    <span>Download Newspaper IFB Notice (.txt)</span>
+                    <span>Download Official Notice (PDF)</span>
                   </button>
 
                   <button
@@ -417,21 +428,21 @@ export default function TenderDetailModal({
               className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs"
             >
               <Globe className="w-3.5 h-3.5" />
-              <span>Official Website</span>
+              <span>Official Portal</span>
               <ExternalLink className="w-3 h-3" />
             </a>
 
-            {/* Direct Download Dossier */}
+            {/* Direct Download PDF Button */}
             <button
               onClick={() => {
                 soundFX.playSuccess();
-                downloadTenderDossier(tender);
+                downloadTenderPDF(tender);
               }}
-              title="Download Complete Tender Notice & Specifications Dossier (.txt)"
-              className="px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold transition cursor-pointer flex items-center gap-1.5"
+              title="Download Official Tender Notice (PDF Document)"
+              className="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
             >
-              <Download className="w-3.5 h-3.5 text-blue-600" />
-              <span>Download Notice</span>
+              <Download className="w-3.5 h-3.5 text-rose-600" />
+              <span>Download PDF</span>
             </button>
 
             {/* Save Button */}

@@ -8,9 +8,12 @@ import {
   ArrowRight, 
   Building2, 
   FileSpreadsheet, 
-  Share2 
+  Share2,
+  ExternalLink,
+  Globe
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
+import { downloadTenderPDF } from '../services/tenderDownloader';
 
 export default function SavedTendersDrawer({
   isOpen,
@@ -147,9 +150,31 @@ export default function SavedTendersDrawer({
                 </div>
 
                 <div className="pt-2 border-t border-[#ede5dc] flex items-center justify-between gap-2">
-                  <span className="text-[10px] text-rose-700 font-bold">
-                    Closes: {new Date(tender.closingDate).toLocaleDateString('en-PK', { day: 'numeric', month: 'short' })}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        soundFX.playSuccess();
+                        downloadTenderPDF(tender);
+                      }}
+                      title="Download Tender Notice (PDF)"
+                      className="p-1.5 rounded-lg bg-white hover:bg-rose-50 text-rose-700 border border-[#e6dacb] transition cursor-pointer flex items-center gap-1 text-[10px] font-bold"
+                    >
+                      <Download className="w-3 h-3 text-rose-600" />
+                      <span>PDF</span>
+                    </button>
+
+                    <a
+                      href={tender.sourceUrl || 'https://ppra.org.pk'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => soundFX.playPop()}
+                      title={`Visit Official ${tender.agency} Portal`}
+                      className="p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 transition text-[10px] font-bold flex items-center gap-0.5"
+                    >
+                      <span>Portal</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
 
                   <button
                     onClick={() => {
