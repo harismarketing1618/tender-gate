@@ -1,0 +1,240 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-pak-blue: #2563eb;
+    --color-pak-navy: #1e3a8a;
+    --color-pak-beige: #f5efe6;
+    --color-pak-beige-border: #e6dacb;
+    --color-pak-beige-text: #7a5632;
+    --color-pak-bg: #faf8f5;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #faf8f5;
+    color: #0f172a;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom crisp scrollbar with blue and beige accents */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f0e8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d8cdbf;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* 3D Styles & Transforms */
+.perspective-800 {
+  perspective: 800px;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1500 {
+  perspective: 1500px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.translate-z-10 {
+  transform: translateZ(10px);
+}
+
+.translate-z-20 {
+  transform: translateZ(20px);
+}
+
+.translate-z-30 {
+  transform: translateZ(30px);
+}
+
+.translate-z-40 {
+  transform: translateZ(40px);
+}
+
+.translate-z-60 {
+  transform: translateZ(60px);
+}
+
+/* 3D Floating Animations */
+@keyframes float-3d-slow {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg) translateZ(20px);
+  }
+  50% {
+    transform: translateY(-12px) rotateX(2deg) rotateY(-3deg) translateZ(35px);
+  }
+}
+
+@keyframes float-3d-fast {
+  0%, 100% {
+    transform: translateY(0px) rotateZ(0deg) translateZ(15px);
+  }
+  50% {
+    transform: translateY(-8px) rotateZ(1.5deg) translateZ(25px);
+  }
+}
+
+@keyframes laser-scan {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.8;
+  }
+}
+
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-slow-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes grid-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 40px;
+  }
+}
+
+.animate-float-slow {
+  animation: float-3d-slow 6s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-3d-fast 4s ease-in-out infinite;
+}
+
+.animate-laser-scan {
+  animation: laser-scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-radar-pulse {
+  animation: radar-pulse 2.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 24s linear infinite;
+}
+
+.animate-rotate-slow-reverse {
+  animation: rotate-slow-reverse 18s linear infinite;
+}
+
+.animate-grid-move {
+  animation: grid-move 20s linear infinite;
+}
+
+/* Glowing animation for active agents in blue & beige theme */
+@keyframes pulse-glow-blue {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.15), inset 0 0 10px rgba(245, 239, 230, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.3), inset 0 0 15px rgba(245, 239, 230, 0.8);
+  }
+}
+
+.agent-active-glow {
+  animation: pulse-glow-blue 3s infinite ease-in-out;
+}
+
+/* 3D Glassmorphism & Blueprint Visuals */
+.glass-3d-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 20px 40px -15px rgba(30, 58, 138, 0.12),
+    0 0 0 1px rgba(226, 213, 195, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.95);
+}
+
+.glass-3d-dark {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(37, 99, 235, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.isometric-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.blueprint-grid-dark {
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Terminal window styling */
+.terminal-window {
+  background: #0f172a;
+  border: 1px solid #334155;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.terminal-text {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
