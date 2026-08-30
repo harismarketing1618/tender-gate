@@ -21,6 +21,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
+import Logo from './Logo';
 
 export default function Footer({ onSelectCategory, agents, onOpenSponsorship, onNavigateView, onOpenPecCalculator }) {
   const [copied, setCopied] = useState(false);
@@ -102,23 +103,8 @@ export default function Footer({ onSelectCategory, agents, onOpenSponsorship, on
           
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center text-white font-bold shadow-md shadow-blue-700/20 border border-blue-400/30">
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2.5L20.5 7.5V16.5L12 21.5L3.5 16.5V7.5L12 2.5Z" />
-                  <path d="M12 2.5V21.5" />
-                  <path d="M3.5 7.5L12 12L20.5 7.5" />
-                  <circle cx="12" cy="12" r="1.8" fill="#60a5fa" stroke="none" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-lg font-black text-slate-900 font-['Outfit']">
-                  TENDER <span className="text-blue-600">GATE</span>
-                </span>
-                <p className="text-[11px] text-slate-500 font-semibold">
-                  Pakistan's #1 Construction Tenders & AI Intelligence Web Platform
-                </p>
-              </div>
+            <div onClick={() => handleNav('tenders')}>
+              <Logo size="small" withSubtitle={true} />
             </div>
             <p className="text-slate-600 text-xs leading-relaxed max-w-sm font-medium">
               Pakistan’s premier multi-agent construction procurement marketplace. Powered by 8 specialized AI crawlers indexing daily tenders from Federal PPRA, Provincial PPRAs, NHA, WAPDA, and MES.

@@ -24,6 +24,7 @@ import {
   Lock
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
+import Logo from './Logo';
 
 export default function Navbar({ 
   savedTendersCount, 
@@ -155,28 +156,8 @@ export default function Navbar({
               setActiveView('tenders');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="relative flex items-center justify-center">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center shadow-md shadow-blue-600/25 border border-blue-400/30 group-hover:scale-105 group-hover:shadow-blue-600/40 transition-all duration-300">
-                <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2.5L20.5 7.5V16.5L12 21.5L3.5 16.5V7.5L12 2.5Z" />
-                  <path d="M12 2.5V21.5" />
-                  <path d="M3.5 7.5L12 12L20.5 7.5" />
-                  <circle cx="12" cy="12" r="1.8" fill="#60a5fa" stroke="none" />
-                </svg>
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 font-['Outfit']">
-                  TENDER <span className="text-blue-600">GATE</span>
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-500 font-semibold leading-tight">
-                Pakistan Construction Tenders & Procurement Intelligence
-              </p>
-            </div>
+            <Logo />
           </div>
 
           {/* Center Website Navigation Links */}
