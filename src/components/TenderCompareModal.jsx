@@ -9,9 +9,13 @@ import {
   Calendar, 
   Layers, 
   ArrowRight, 
-  Trash2 
+  Trash2,
+  Download,
+  ExternalLink,
+  Globe
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
+import { downloadTenderDossier } from '../services/tenderDownloader';
 
 export default function TenderCompareModal({
   isOpen,
@@ -147,6 +151,32 @@ export default function TenderCompareModal({
                         </div>
                       </div>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 mb-2">
+                    <a
+                      href={tender.sourceUrl || 'https://ppra.org.pk'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => soundFX.playPop()}
+                      title={`Visit Official ${tender.agency} Portal`}
+                      className="flex-1 py-2 px-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-[11px] font-bold flex items-center justify-center gap-1 border border-blue-200 transition"
+                    >
+                      <Globe className="w-3.5 h-3.5" />
+                      <span>Official Portal</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+
+                    <button
+                      onClick={() => {
+                        soundFX.playSuccess();
+                        downloadTenderDossier(tender);
+                      }}
+                      title="Download Tender Notice Dossier (.txt)"
+                      className="p-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-[#e6dacb] transition cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
                   </div>
 
                   <button

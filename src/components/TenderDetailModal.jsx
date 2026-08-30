@@ -11,10 +11,15 @@ import {
   Sparkles, 
   FileText, 
   CheckCircle2, 
-  Coins 
+  Coins,
+  ExternalLink,
+  Download,
+  FileSpreadsheet,
+  Globe
 } from 'lucide-react';
 import { PEC_SPECIALIZATION_CODES } from '../data/pakistanMeta';
 import { soundFX } from '../services/soundFx';
+import { downloadTenderDossier, downloadTenderBOQ } from '../services/tenderDownloader';
 
 export default function TenderDetailModal({
   tender,
@@ -74,7 +79,34 @@ export default function TenderDetailModal({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            {/* Official Website Link Button */}
+            <a
+              href={tender.sourceUrl || 'https://ppra.org.pk'}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => soundFX.playPop()}
+              title={`Visit Official ${tender.agency} Tender Website`}
+              className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold border border-blue-200 text-xs flex items-center gap-1.5 transition shadow-2xs"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Official Portal</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+
+            {/* Quick Download Button */}
+            <button
+              onClick={() => {
+                soundFX.playSuccess();
+                downloadTenderDossier(tender);
+              }}
+              title="Download Full Tender Specification Dossier (.txt)"
+              className="px-3 py-1.5 rounded-xl bg-[#f5efe6] hover:bg-[#ede3d5] text-[#7a5632] font-bold border border-[#e2d5c3] text-xs flex items-center gap-1.5 transition shadow-2xs cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5 text-[#8a6742]" />
+              <span className="hidden sm:inline">Download Notice</span>
+            </button>
+
             <button
               onClick={handlePrint}
               title="Print Dossier / Save as PDF"
@@ -173,8 +205,61 @@ export default function TenderDetailModal({
                 </div>
                 <div className="p-4 rounded-2xl bg-[#fbf9f5] border border-[#ede5dc] space-y-1.5">
                   <span className="text-[10px] text-[#8a6742] font-bold uppercase tracking-wider">Tender Document Fee</span>
-                  <p className="text-xs font-bold text-slate-900">{tender.tenderFee}</p>
+                  <p className="text-xs font-bold text-slate-900">{tender.tenderFee || tender.tenderDocFee}</p>
                   <p className="text-[11px] text-slate-500">Payable via Non-Refundable Pay Order / Treasury Challan</p>
+                </div>
+              </div>
+
+              {/* Official Portal & Document Download Center Banner */}
+              <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-950 text-white shadow-lg space-y-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-blue-500/20 text-blue-300 border border-blue-400/30 uppercase tracking-wide inline-block mb-1">
+                      Official Source & Downloads
+                    </span>
+                    <h4 className="text-sm sm:text-base font-black font-['Outfit'] text-white">
+                      Official Tender Portal & Bidding Downloads
+                    </h4>
+                    <p className="text-xs text-slate-300">
+                      Access verified gazette notice directly on the official {tender.agency} portal or export complete bidding specifications.
+                    </p>
+                  </div>
+
+                  <a
+                    href={tender.sourceUrl || 'https://ppra.org.pk'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => soundFX.playPop()}
+                    className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black flex items-center gap-2 transition shadow-md shrink-0 cursor-pointer"
+                  >
+                    <Globe className="w-4 h-4" />
+                    <span>Open {tender.agencyCode || 'Official'} Portal</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <div className="pt-3 border-t border-white/10 flex flex-wrap items-center gap-3 text-xs">
+                  <button
+                    onClick={() => {
+                      soundFX.playSuccess();
+                      downloadTenderDossier(tender);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5 text-blue-300" />
+                    <span>Download Tender Dossier (.txt)</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      soundFX.playSuccess();
+                      downloadTenderBOQ(tender);
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
+                  >
+                    <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-300" />
+                    <span>Download BOQ Specs (.csv)</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -275,6 +360,45 @@ export default function TenderDetailModal({
                 <div>Bid Security (2% CDR): {tender.bidSecurityAmount}</div>
                 <div>Closing Date: {new Date(tender.closingDate).toLocaleString('en-PK')}</div>
               </div>
+
+              {/* Action buttons inside Notice */}
+              <div className="mt-4 pt-3 border-t border-slate-300 flex flex-wrap items-center justify-between gap-2 font-sans">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      soundFX.playSuccess();
+                      downloadTenderDossier(tender);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold flex items-center gap-1.5 hover:bg-slate-800 transition cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download Newspaper IFB Notice (.txt)</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      soundFX.playSuccess();
+                      downloadTenderBOQ(tender);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-bold flex items-center gap-1.5 hover:bg-slate-200 border border-slate-300 transition cursor-pointer"
+                  >
+                    <FileSpreadsheet className="w-3.5 h-3.5" />
+                    <span>Download BOQ CSV</span>
+                  </button>
+                </div>
+
+                <a
+                  href={tender.sourceUrl || 'https://ppra.org.pk'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => soundFX.playPop()}
+                  className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1 hover:bg-blue-100 border border-blue-200 transition"
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>Visit {tender.agency} Gazette Link</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           )}
 
@@ -282,7 +406,35 @@ export default function TenderDetailModal({
 
         {/* Modal Footer */}
         <div className="bg-[#fbf9f5] border-t border-[#ece4d8] p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Direct Official Website Button */}
+            <a
+              href={tender.sourceUrl || 'https://ppra.org.pk'}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => soundFX.playPop()}
+              title={`Visit Official ${tender.agency} Tender Website`}
+              className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-xs"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>Official Website</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+
+            {/* Direct Download Dossier */}
+            <button
+              onClick={() => {
+                soundFX.playSuccess();
+                downloadTenderDossier(tender);
+              }}
+              title="Download Complete Tender Notice & Specifications Dossier (.txt)"
+              className="px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold transition cursor-pointer flex items-center gap-1.5"
+            >
+              <Download className="w-3.5 h-3.5 text-blue-600" />
+              <span>Download Notice</span>
+            </button>
+
+            {/* Save Button */}
             <button
               onClick={() => {
                 soundFX.playBookmark();
@@ -295,9 +447,10 @@ export default function TenderDetailModal({
               }`}
             >
               {isSaved ? <BookmarkCheck className="w-4 h-4 text-[#8a6742]" /> : <Bookmark className="w-4 h-4" />}
-              <span>{isSaved ? 'In Watchlist' : 'Save Tender'}</span>
+              <span>{isSaved ? 'In Watchlist' : 'Save'}</span>
             </button>
 
+            {/* WhatsApp Share */}
             <button
               onClick={() => {
                 soundFX.playPop();
@@ -306,7 +459,7 @@ export default function TenderDetailModal({
               className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-[#e6dacb] text-xs font-bold transition cursor-pointer flex items-center gap-1.5"
             >
               <Share2 className="w-4 h-4" />
-              <span>Share WhatsApp</span>
+              <span className="hidden sm:inline">WhatsApp</span>
             </button>
           </div>
 
@@ -315,9 +468,9 @@ export default function TenderDetailModal({
               soundFX.playPop();
               onClose();
             }}
-            className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black transition cursor-pointer shadow-xs"
+            className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black transition cursor-pointer shadow-xs"
           >
-            Done & Close
+            Close
           </button>
         </div>
 

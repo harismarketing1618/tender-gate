@@ -19,6 +19,7 @@ import {
   Eye 
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
+import { downloadTenderDossier } from '../services/tenderDownloader';
 
 export default function TenderCard({
   tender,
@@ -112,9 +113,25 @@ export default function TenderCard({
             <Building2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
             <span className="font-bold truncate">{tender.agency}</span>
           </div>
-          <span className="text-[10px] px-2 py-0.5 rounded bg-white text-slate-600 uppercase font-bold border border-[#e6dacb]">
-            {tender.province}
-          </span>
+          <div className="flex items-center gap-1 shrink-0">
+            <a
+              href={tender.sourceUrl || 'https://ppra.org.pk'}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                e.stopPropagation();
+                soundFX.playPop();
+              }}
+              title={`Visit Official ${tender.agency} Portal Link`}
+              className="text-[10px] px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold border border-blue-200 flex items-center gap-1 transition"
+            >
+              <span>Portal</span>
+              <ExternalLink className="w-2.5 h-2.5" />
+            </a>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-white text-slate-600 uppercase font-bold border border-[#e6dacb]">
+              {tender.province}
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-1.5 text-slate-600 font-medium">
@@ -142,6 +159,34 @@ export default function TenderCard({
       {/* Footer Actions */}
       <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
+          {/* Download Tender Notice Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              soundFX.playSuccess();
+              downloadTenderDossier(tender);
+            }}
+            title="Download Official Tender Notice & Dossier (.txt)"
+            className="p-2.5 rounded-xl bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-700 border border-[#e6dacb] transition cursor-pointer"
+          >
+            <Download className="w-4 h-4 text-blue-600" />
+          </button>
+
+          {/* Official Website Link Button */}
+          <a
+            href={tender.sourceUrl || 'https://ppra.org.pk'}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              e.stopPropagation();
+              soundFX.playPop();
+            }}
+            title={`Open Official Tender Website (${tender.agency})`}
+            className="p-2.5 rounded-xl bg-white hover:bg-indigo-50 text-slate-600 hover:text-indigo-700 border border-[#e6dacb] transition cursor-pointer flex items-center justify-center"
+          >
+            <ExternalLink className="w-4 h-4 text-indigo-600" />
+          </a>
+
           {/* Save / Bookmark Button */}
           <button
             onClick={(e) => {
@@ -192,7 +237,7 @@ export default function TenderCard({
 
         {/* View Details Clickable Indicator */}
         <div className="flex-1 py-2 px-3 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 transition shadow-xs">
-          <span>Open Live Dossier</span>
+          <span>Live Dossier</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </div>
       </div>

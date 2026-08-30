@@ -17,9 +17,12 @@ import {
   Calendar,
   Layers,
   Flame,
-  Award
+  Award,
+  Download,
+  Globe
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
+import { downloadTenderDossier } from '../services/tenderDownloader';
 
 export default function Hero3DMegaTenders({ 
   tenders = [], 
@@ -243,16 +246,42 @@ export default function Hero3DMegaTenders({
           {/* Bottom Action Footer (Maroon Buttons) */}
           <div className="relative z-10 pt-4 border-t border-[#ecd5d9] flex flex-wrap items-center justify-between gap-3">
             
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => {
                   soundFX.playPop();
                   if (onSelectTender) onSelectTender(currentTender);
                 }}
-                className="px-5 py-2.5 rounded-xl bg-[#780016] hover:bg-[#600012] text-white text-xs font-black transition flex items-center gap-1.5 shadow-md shadow-rose-950/20 cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-[#780016] hover:bg-[#600012] text-white text-xs font-black transition flex items-center gap-1.5 shadow-md shadow-rose-950/20 cursor-pointer"
               >
-                <span>Inspect 3D Dossier & Specs</span>
+                <span>Inspect 3D Dossier</span>
                 <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Direct Official Website Link */}
+              <a
+                href={currentTender.sourceUrl || 'https://ppra.org.pk'}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => soundFX.playPop()}
+                title={`Visit Official ${currentTender.agency} Portal`}
+                className="px-3 py-2.5 rounded-xl bg-white hover:bg-blue-50 text-blue-700 font-bold border border-blue-200 text-xs flex items-center gap-1.5 transition shadow-2xs"
+              >
+                <Globe className="w-3.5 h-3.5 text-blue-600" />
+                <span className="hidden sm:inline">Official Portal</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+
+              {/* Direct Download Dossier */}
+              <button
+                onClick={() => {
+                  soundFX.playSuccess();
+                  downloadTenderDossier(currentTender);
+                }}
+                title="Download Tender Notice Dossier (.txt)"
+                className="p-2.5 rounded-xl bg-white hover:bg-[#fbf0f2] text-[#780016] border border-[#ecd5d9] transition cursor-pointer"
+              >
+                <Download className="w-4 h-4" />
               </button>
 
               <button
@@ -260,9 +289,9 @@ export default function Hero3DMegaTenders({
                   soundFX.playPop();
                   if (onOpenPecCalculator) onOpenPecCalculator();
                 }}
-                className="px-3.5 py-2.5 rounded-xl bg-[#fbf0f2] hover:bg-[#f5e1e5] text-[#780016] border border-[#ecd5d9] text-xs font-bold transition cursor-pointer"
+                className="px-3 py-2.5 rounded-xl bg-[#fbf0f2] hover:bg-[#f5e1e5] text-[#780016] border border-[#ecd5d9] text-xs font-bold transition cursor-pointer"
               >
-                PEC Limit Check
+                PEC Check
               </button>
 
               {onSaveTender && (
