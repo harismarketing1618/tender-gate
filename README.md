@@ -27,10 +27,10 @@ TENDER GATE indexes, structures, and audits public sector tenders across 24+ fed
 
 ```bash
 # Clone the repository
-git clone https://github.com/harismarketing1618/paktender.git
+git clone https://github.com/harismarketing1618/tender-gate.git
 
 # Navigate into project directory
-cd paktender
+cd tender-gate
 
 # Install dependencies
 npm install
