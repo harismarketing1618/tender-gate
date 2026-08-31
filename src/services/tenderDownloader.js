@@ -1,5 +1,6 @@
-﻿// Tender Document, PDF & BOQ Exporter Service for TENDER GATE
+// Tender Document, PDF & MS Excel BOQ Exporter Service for TENDER GATE
 import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
 
 export function downloadTenderPDF(tender) {
   try {
@@ -186,93 +187,145 @@ export function downloadTenderPDF(tender) {
     const filename = `TenderGate_${(tender.refNo || 'Tender').replace(/[^a-zA-Z0-9_-]/g, '_')}_Notice.pdf`;
     doc.save(filename);
   } catch (error) {
-    console.error('Failed to generate PDF, falling back to TXT dossier:', error);
-    downloadTenderDossier(tender);
+    console.error('Failed to generate PDF:', error);
   }
 }
 
-export function downloadTenderDossier(tender) {
-  const content = `================================================================================
-TENDER GATE — OFFICIAL PROCUREMENT DOSSIER & TENDER SPECIFICATION
-Platform: https://tender-gate.vercel.app
-Generated on: ${new Date().toLocaleString('en-PK')}
-================================================================================
-
-TENDER INFORMATION
---------------------------------------------------------------------------------
-Title:                 ${tender.title}
-Reference Number:      ${tender.refNo}
-PPRA Reference ID:     ${tender.ppraRef}
-Procuring Agency:      ${tender.agency} (${tender.agencyCode || 'GOVT'})
-Category / Discipline: ${tender.category}
-Location:              ${tender.locationFull} (${tender.city}, ${tender.province})
-Official Portal Link:  ${tender.sourceUrl || 'https://ppra.org.pk'}
-
-FINANCIAL & BID SECURITY
---------------------------------------------------------------------------------
-Estimated Value:       ${tender.formattedValue} (PKR ${tender.estimatedValuePKR ? tender.estimatedValuePKR.toLocaleString() : 'N/A'})
-2% CDR / Bid Security: ${tender.bidSecurityAmount}
-Bidding Method:        ${tender.biddingMethod || 'Single Stage Two Envelope (PPRA 36-b)'}
-Tender Document Fee:   ${tender.tenderDocFee || 'PKR 10,000'}
-
-CRITICAL DEADLINES
---------------------------------------------------------------------------------
-Publication Date:      ${tender.postedDate || new Date().toISOString().split('T')[0]}
-Submission Deadline:   ${tender.closingDate ? new Date(tender.closingDate).toLocaleString('en-PK') : 'Refer to Notice'}
-Pre-Bid Meeting:       ${tender.preBidMeetingDate || 'Not specified'}
-
-PEC LICENSING & MANDATORY ELIGIBILITY
---------------------------------------------------------------------------------
-Required PEC Category: ${tender.pecCategory}
-Required PEC Codes:    ${tender.pecCodesRequired ? tender.pecCodesRequired.join(', ') : 'Civil/General'}
-
-MANDATORY CRITERIA:
-${tender.mandatoryCriteria ? tender.mandatoryCriteria.map((c, i) => `  ${i + 1}. ${c}`).join('\n') : '  - Valid PEC License in required category'}
-
-SCOPE OF WORK & TECHNICAL BILL OF QUANTITIES (BOQ):
-${tender.scopeOfWork ? tender.scopeOfWork.map((s, i) => `  ${i + 1}. ${s}`).join('\n') : '  - Refer to detailed tender drawings'}
-
-AI PROCUREMENT VIABILITY ANALYSIS
---------------------------------------------------------------------------------
-Viability Score:       ${tender.aiViabilityScore || 90}%
-Viability Summary:     ${tender.aiSummary || 'Standard public sector procurement scheme.'}
-
-================================================================================
-TENDER GATE | Pakistan's Premier Autonomous Construction Procurement Platform
-Official Portal Reference: ${tender.sourceUrl || 'https://ppra.org.pk'}
-================================================================================`;
-
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `TenderGate_${(tender.refNo || 'Tender').replace(/[^a-zA-Z0-9_-]/g, '_')}_Dossier.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
 export function downloadTenderBOQ(tender) {
-  const headers = ['Item No', 'Scope / Specification Item', 'Category', 'Procuring Agency', 'Estimated Tender Value', 'PEC Code', 'Official Portal Link'];
-  const rows = (tender.scopeOfWork || [tender.shortDescription]).map((scope, idx) => [
-    `"${idx + 1}"`,
-    `"${scope.replace(/"/g, '""')}"`,
-    `"${tender.category}"`,
-    `"${tender.agency}"`,
-    `"${tender.formattedValue}"`,
-    `"${tender.pecCodesRequired ? tender.pecCodesRequired.join('; ') : tender.pecCategory}"`,
-    `"${tender.sourceUrl || 'https://ppra.org.pk'}"`
-  ]);
+  try {
+    const wb = XLSX.utils.book_new();
 
-  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `TenderGate_${(tender.refNo || 'Tender').replace(/[^a-zA-Z0-9_-]/g, '_')}_BOQ_Scope.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+    // 1. Prepare BOQ Sheet Data
+    const boqData = [
+      ['TENDER GATE — OFFICIAL BILL OF QUANTITIES (BOQ) WORKBOOK'],
+      ['Pakistan Autonomous Construction Procurement & Tender Intelligence Platform'],
+      [],
+      ['Tender Reference:', tender.refNo || 'N/A', 'PPRA TS ID:', tender.ppraRef || 'N/A'],
+      ['Project Title:', tender.title || 'N/A'],
+      ['Procuring Agency:', tender.agency || 'N/A', 'Location:', tender.locationFull || 'N/A'],
+      ['PEC Category Required:', tender.pecCategory || 'N/A', 'Specialization Codes:', (tender.pecCodesRequired || []).join(', ') || 'N/A'],
+      ['Estimated Tender Value:', tender.formattedValue || 'N/A', '2% CDR / Bid Security:', tender.bidSecurityAmount || 'N/A'],
+      ['Submission Deadline:', tender.closingDate ? new Date(tender.closingDate).toLocaleString('en-PK') : 'Refer Notice', 'Official Portal:', tender.sourceUrl || 'https://ppra.org.pk'],
+      [],
+      ['BILL OF QUANTITIES (BOQ) SCHEDULE OF ITEMS & SCOPES OF WORK'],
+      [
+        'Item No.',
+        'PEC Code',
+        'Scope of Work / Technical Specifications',
+        'Unit',
+        'Estimated Qty',
+        'Estimated Unit Rate (PKR)',
+        'Total Amount (PKR)',
+        'Compliance & Technical Standards'
+      ]
+    ];
+
+    const scopes = tender.scopeOfWork || [tender.shortDescription || 'General Construction Works'];
+    const totalEstValue = tender.estimatedValuePKR || 0;
+    const estItemValue = scopes.length > 0 && totalEstValue > 0 ? Math.round(totalEstValue / scopes.length) : 'As per Bill';
+
+    scopes.forEach((scope, index) => {
+      const pecCode = (tender.pecCodesRequired && tender.pecCodesRequired[index % tender.pecCodesRequired.length]) || tender.pecCategory || 'PEC-STD';
+      boqData.push([
+        index + 1,
+        pecCode,
+        scope,
+        'Job / Lot',
+        1,
+        typeof estItemValue === 'number' ? estItemValue : 'Refer Specs',
+        typeof estItemValue === 'number' ? estItemValue : 'Refer Specs',
+        'PEC / ASTM / NHA / C&W Standard Specifications Compliance Required'
+      ]);
+    });
+
+    boqData.push([]);
+    boqData.push([
+      'TOTAL',
+      '',
+      'TOTAL ESTIMATED PROJECT / BOQ PACKAGE VALUE',
+      '',
+      '',
+      '',
+      tender.formattedValue || 'N/A',
+      ''
+    ]);
+    boqData.push([
+      'CDR (2%)',
+      '',
+      'REQUIRED 2% CALL DEPOSIT RECEIPT (CDR) / EARNEST MONEY',
+      '',
+      '',
+      '',
+      tender.bidSecurityAmount || '2% of Bid Value',
+      'Payable via CDR / Bank Guarantee from Scheduled Pakistani Bank'
+    ]);
+
+    const wsBOQ = XLSX.utils.aoa_to_sheet(boqData);
+
+    // Set Column Widths for readability in Excel
+    wsBOQ['!cols'] = [
+      { wch: 10 }, // Item No
+      { wch: 14 }, // PEC Code
+      { wch: 65 }, // Scope / Description
+      { wch: 14 }, // Unit
+      { wch: 15 }, // Qty
+      { wch: 25 }, // Unit Rate
+      { wch: 28 }, // Total Amount
+      { wch: 55 }  // Compliance
+    ];
+
+    XLSX.utils.book_append_sheet(wb, wsBOQ, 'Bill of Quantities (BOQ)');
+
+    // 2. Specifications & Mandatory Criteria Sheet
+    const specData = [
+      ['TENDER SPECIFICATIONS & MANDATORY ELIGIBILITY CRITERIA'],
+      [],
+      ['Tender Title:', tender.title || 'N/A'],
+      ['Reference No:', tender.refNo || 'N/A'],
+      ['Procuring Agency:', tender.agency || 'N/A'],
+      ['Location:', tender.locationFull || 'N/A'],
+      ['City / Province:', `${tender.city || ''}, ${tender.province || ''}`],
+      ['Bidding Method:', tender.biddingMethod || 'Single Stage Two Envelope (PPRA Rule 36-b)'],
+      ['Tender Doc Fee:', tender.tenderDocFee || 'PKR 10,000'],
+      ['Pre-Bid Meeting:', tender.preBidMeetingDate || 'Not specified'],
+      ['AI Viability Score:', `${tender.aiViabilityScore || 90}%`],
+      ['AI Summary:', tender.aiSummary || 'Standard public sector procurement scheme.'],
+      [],
+      ['MANDATORY ELIGIBILITY CRITERIA'],
+      ['No.', 'Mandatory Contractor Criteria']
+    ];
+
+    const criteria = tender.mandatoryCriteria || [
+      `Valid PEC License in Category ${tender.pecCategory || 'C-A'}`,
+      'Active Taxpayer List (ATL) verification on FBR portal',
+      'Bid Security (2% CDR) in favor of the Procuring Entity'
+    ];
+
+    criteria.forEach((crit, idx) => {
+      specData.push([idx + 1, crit]);
+    });
+
+    if (tender.keyRisks && tender.keyRisks.length > 0) {
+      specData.push([]);
+      specData.push(['IDENTIFIED SITE & BID RISKS']);
+      specData.push(['No.', 'Risk Description & Mitigation Requirement']);
+      tender.keyRisks.forEach((risk, idx) => {
+        specData.push([idx + 1, risk]);
+      });
+    }
+
+    const wsSpec = XLSX.utils.aoa_to_sheet(specData);
+    wsSpec['!cols'] = [
+      { wch: 8 },
+      { wch: 80 }
+    ];
+
+    XLSX.utils.book_append_sheet(wb, wsSpec, 'Tender Specifications');
+
+    // Save as .xlsx workbook
+    const filename = `TenderGate_${(tender.refNo || 'Tender').replace(/[^a-zA-Z0-9_-]/g, '_')}_BOQ.xlsx`;
+    XLSX.writeFile(wb, filename);
+  } catch (error) {
+    console.error('Failed to generate Excel BOQ:', error);
+  }
 }

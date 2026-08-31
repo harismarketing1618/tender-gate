@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { PEC_SPECIALIZATION_CODES } from '../data/pakistanMeta';
 import { soundFX } from '../services/soundFx';
-import { downloadTenderPDF, downloadTenderDossier, downloadTenderBOQ } from '../services/tenderDownloader';
+import { downloadTenderPDF, downloadTenderBOQ } from '../services/tenderDownloader';
 
 export default function TenderDetailModal({
   tender,
@@ -255,21 +255,10 @@ export default function TenderDetailModal({
                       soundFX.playSuccess();
                       downloadTenderBOQ(tender);
                     }}
-                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black transition flex items-center gap-2 shadow-md cursor-pointer"
                   >
-                    <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-300" />
-                    <span>Download BOQ (.csv)</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      soundFX.playSuccess();
-                      downloadTenderDossier(tender);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-2 border border-white/20 cursor-pointer"
-                  >
-                    <Download className="w-3.5 h-3.5 text-blue-300" />
-                    <span>Dossier (.txt)</span>
+                    <FileSpreadsheet className="w-4 h-4 text-white" />
+                    <span>Download BOQ (Excel .xlsx)</span>
                   </button>
                 </div>
               </div>
@@ -391,10 +380,10 @@ export default function TenderDetailModal({
                       soundFX.playSuccess();
                       downloadTenderBOQ(tender);
                     }}
-                    className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-bold flex items-center gap-1.5 hover:bg-slate-200 border border-slate-300 transition cursor-pointer"
+                    className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-1.5 hover:bg-emerald-100 border border-emerald-300 transition cursor-pointer"
                   >
-                    <FileSpreadsheet className="w-3.5 h-3.5" />
-                    <span>Download BOQ CSV</span>
+                    <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Download BOQ (Excel .xlsx)</span>
                   </button>
                 </div>
 

@@ -15,7 +15,7 @@ import {
   Globe
 } from 'lucide-react';
 import { soundFX } from '../services/soundFx';
-import { downloadTenderPDF, downloadTenderDossier } from '../services/tenderDownloader';
+import { downloadTenderPDF } from '../services/tenderDownloader';
 
 export default function TenderCompareModal({
   isOpen,
